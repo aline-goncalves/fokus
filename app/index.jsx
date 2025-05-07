@@ -1,5 +1,9 @@
 import React, { useState } from 'react';
-import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
+import { Image, StyleSheet, View } from 'react-native';
+import { FokusButton } from '../app/components/FokusButton';
+import { Footer } from '../app/components/Footer';
+import { MenuItem } from '../app/components/MenuItem';
+import { Timer } from '../app/components/Timer';
 
 const pomodoro = [
   {
@@ -33,28 +37,23 @@ export default function Index() {
         <View style={styles.menu}>
           {
             pomodoro.map(p => 
-              <Pressable key={p.id} 
-                style={ timerType.id === p.id ? styles.menuItemTextActive : null }
-                onPress={ () => setTimerType(p)}>
-                <Text style={styles.menuItemText}>{p.display}</Text>
-              </Pressable>
+              <MenuItem
+                key={ p.id }
+                active={ timerType.id === p.id }
+                onPress={ () => setTimerType(p) }
+                display={ p.display }
+              />
             )
           }
         </View>
         
-        <Text style={styles.timer}>
-          { new Date(timerType.initialValue * 1000).toLocaleTimeString('pt-BR', {minute:'2-digit', second:'2-digit'})}</Text>
+        <Timer initialValue={ timerType.initialValue }/>
+
+        <FokusButton/>
         
-        <Pressable style={styles.button}>
-          <Text style={styles.buttonText}>Começar</Text>
-        </Pressable>
       </View>
 
-      <View style={styles.footer}>
-        <Text style={styles.footerText}>Projeto fictício e sem fins comerciais.</Text>
-        
-        <Text style={styles.footerText}>Desenvolvido por Alura.</Text>
-      </View>
+      <Footer/>
     </View>
   );
 };
@@ -82,38 +81,4 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
     alignItems: 'center',
   },
-  menuItemText:{
-    fontSize: 12.5,
-    color: '#fff',
-    padding: 8,
-  },
-  menuItemTextActive: {
-    backgroundColor: '#144480',
-    borderRadius: 8
-  },
-  timer:{
-    fontSize:54,
-    color: '#fff',
-    fontWeight: 'bold',
-    textAlign: 'center',
-  },
-  button:{
-    backgroundColor: '#8872FF',
-    borderRadius: 32,
-    padding: 8,
-  },
-  buttonText:{
-    textAlign: 'center',
-    color: '#021123',
-    fontSize: 18,
-    fontWeight: 'bold',
-  },
-  footer:{
-    width: '80%',
-  },
-  footerText:{
-    textAlign: 'center',
-    color: '#98A0A8',
-    fontSize: 12.5
-  }
 });
