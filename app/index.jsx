@@ -1,29 +1,58 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
 
+const pomodoro = [
+  {
+    id: 'focus',
+    initialValue: 25,
+    image: require('../assets/images/Imagem foco.png'),
+    display: 'Foco'
+  },
+  {
+    id: 'short',
+    initialValue: 5,
+    image: require('../assets/images/Imagem descanso curto.png'),
+    display: 'Pausa curta'
+  },
+  {
+    id: 'long',
+    initialValue: 15,
+    image: require('../assets/images/Imagem descanso longo.png'),
+    display: 'Pausa longa'
+  },
+]
+
 export default function Index() {
+  const [timerType, setTimerType] = useState(pomodoro[0])
+
   return (
     <View style={styles.container}>
-      <Image source={require('../assets/images/Imagem foco.png')}/>
+      <Image source={timerType.image}/>
+      
       <View style={styles.actions}>
         <View style={styles.menu}>
-          <Pressable style={styles.menuItemTextActive}>
-            <Text style={styles.menuItemText}>Foco</Text>
-          </Pressable>
-          <Pressable>
-            <Text style={styles.menuItemText}>Pausa Curta</Text>
-          </Pressable>
-          <Pressable>
-            <Text style={styles.menuItemText}>Pausa Longa</Text>
-          </Pressable>
+          {
+            pomodoro.map(p => 
+              <Pressable key={p.id} 
+                style={ timerType.id === p.id ? styles.menuItemTextActive : null }
+                onPress={ () => setTimerType(p)}>
+                <Text style={styles.menuItemText}>{p.display}</Text>
+              </Pressable>
+            )
+          }
         </View>
-        <Text style={styles.timer}>25:00</Text>
+        
+        <Text style={styles.timer}>
+          { new Date(timerType.initialValue * 1000).toLocaleTimeString('pt-BR', {minute:'2-digit', second:'2-digit'})}</Text>
+        
         <Pressable style={styles.button}>
           <Text style={styles.buttonText}>Começar</Text>
         </Pressable>
       </View>
+
       <View style={styles.footer}>
         <Text style={styles.footerText}>Projeto fictício e sem fins comerciais.</Text>
+        
         <Text style={styles.footerText}>Desenvolvido por Alura.</Text>
       </View>
     </View>
